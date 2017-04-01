@@ -3,7 +3,7 @@
 %global modname pynacl
 
 Name:           python-%{modname}
-Version:        1.1.1
+Version:        1.1.2
 Release:        1%{?dist}
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
@@ -87,6 +87,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-%{python3_version} -v
 %{python3_sitearch}/nacl/
 
 %changelog
+* Sat Apr 01 2017 Igor Gnatenko <ignatenko@redhat.com> - 1.1.2-1
+- Update to 1.1.2
+
 * Thu Mar 16 2017 Igor Gnatenko <ignatenko@redhat.com> - 1.1.1-1
 - Update to 1.1.1
 
