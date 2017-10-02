@@ -4,7 +4,7 @@
 
 Name:           python-%{modname}
 Version:        1.1.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
 License:        ASL 2.0
@@ -87,6 +87,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-%{python3_version} -v
 %{python3_sitearch}/nacl/
 
 %changelog
+* Mon Oct 02 2017 Remi Collet <remi@fedoraproject.org> - 1.1.2-4
+- rebuild for libsodium
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
