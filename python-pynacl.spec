@@ -1,10 +1,11 @@
+%{?python_enable_dependency_generator}
 %bcond_without check
 
 %global modname pynacl
 
 Name:           python-%{modname}
-Version:        1.2.0
-Release:        2%{?dist}
+Version:        1.2.1
+Release:        1%{?dist}
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
 License:        ASL 2.0
@@ -31,8 +32,6 @@ BuildRequires:  python2-six
 BuildRequires:  python2-pytest >= 3.2.1
 BuildRequires:  python2-hypothesis >= 3.27.0
 %endif
-Requires:       python2-cffi >= 1.4.1
-Requires:       python2-six
 
 %description -n python2-%{modname} %{_description}
 
@@ -49,8 +48,6 @@ BuildRequires:  python3-six
 BuildRequires:  python3-pytest >= 3.2.1
 BuildRequires:  python3-hypothesis >= 3.27.0
 %endif
-Requires:       python3-cffi >= 1.4.1
-Requires:       python3-six
 
 %description -n python3-%{modname} %{_description}
 
@@ -101,6 +98,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-%{python3_version} -v \
 %{python3_sitearch}/nacl/
 
 %changelog
+* Tue Mar 27 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.2.1-1
+- Update to 1.2.1
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
