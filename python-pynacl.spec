@@ -58,6 +58,13 @@ Python 3 version.
 # Remove bundled libsodium, to be sure
 rm -vrf src/libsodium/
 
+# ARM and s390x is too slow for upstream tests
+# See https://bugzilla.redhat.com/show_bug.cgi?id=1594901
+# And https://github.com/pyca/pynacl/issues/370
+%ifarch s390x %{arm}
+sed -i 's/@settings(deadline=1500, max_examples=5)/@settings(deadline=4000, max_examples=5)/' tests/test_pwhash.py
+%endif
+
 %build
 export SODIUM_INSTALL=system
 %py2_build
@@ -69,20 +76,8 @@ export SODIUM_INSTALL=system
 
 %if %{with check}
 %check
-# ARM is too slow for upstream tests
-# https://github.com/pyca/pynacl/issues/370
-PYTHONPATH=%{buildroot}%{python2_sitearch} py.test-%{python2_version} -v \
-%ifarch %{arm}
-  || :
-%else
-  ;
-%endif
-PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-%{python3_version} -v \
-%ifarch %{arm}
-  || :
-%else
-  ;
-%endif
+PYTHONPATH=%{buildroot}%{python2_sitearch} py.test-2 -v
+PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %endif
 
 %files -n python2-%{modname}
@@ -100,6 +95,8 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-%{python3_version} -v \
 %changelog
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 1.2.1-2
 - Rebuilt for Python 3.7
+- Prolong the deadline for tests on s390x
+- Don't ignore the test results on arm, do the same as on s390x
 
 * Tue Mar 27 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.2.1-1
 - Update to 1.2.1
