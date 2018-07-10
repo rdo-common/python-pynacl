@@ -12,6 +12,7 @@ License:        ASL 2.0
 URL:            https://github.com/pyca/pynacl
 Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
 
+BuildRequires:  gcc
 BuildRequires:  libsodium-devel
 
 %global _description \
