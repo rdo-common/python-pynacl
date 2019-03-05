@@ -1,6 +1,15 @@
 %{?python_enable_dependency_generator}
 %bcond_without check
 
+%if 0%{?fedora} || 0%{?rhel} > 7
+%bcond_with    python2
+%bcond_without python3
+%else
+%bcond_without python2
+%bcond_with    python3
+%endif
+
+
 %global modname pynacl
 
 Name:           python-%{modname}
@@ -22,12 +31,15 @@ and speed.
 
 %description %{_description}
 
+%if %{with python2}
 %package -n python2-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python2-%{modname}}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-cffi >= 1.4.1
+# python-hypothesis is missing requires on enum34, let's workaround here until fixed.
+BuildRequires:  python-enum34
 %if %{with check}
 BuildRequires:  python2-six
 BuildRequires:  python2-pytest >= 3.2.1
@@ -38,6 +50,9 @@ BuildRequires:  python2-hypothesis >= 3.27.0
 
 Python 2 version.
 
+%endif
+
+%if %{with python3}
 %package -n python3-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{modname}}
@@ -53,6 +68,7 @@ BuildRequires:  python3-hypothesis >= 3.27.0
 %description -n python3-%{modname} %{_description}
 
 Python 3 version.
+%endif
 
 %prep
 %autosetup -n %{modname}-%{version}
@@ -68,30 +84,46 @@ sed -i 's/@settings(deadline=1500, max_examples=5)/@settings(deadline=4000, max_
 
 %build
 export SODIUM_INSTALL=system
+%if %{with python2}
 %py2_build
+%endif
+%if %{with python3}
 %py3_build
+%endif
 
 %install
+%if %{with python2}
 %py2_install
+%endif
+%if %{with python3}
 %py3_install
+%endif
 
 %if %{with check}
 %check
+%if %{with python2}
 PYTHONPATH=%{buildroot}%{python2_sitearch} py.test-2 -v
+%endif
+%if %{with python3}
 PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %endif
+%endif
 
+%if %{with python2}
 %files -n python2-%{modname}
 %license LICENSE
 %doc README.rst
 %{python2_sitearch}/PyNaCl-*.egg-info/
 %{python2_sitearch}/nacl/
+%endif
 
+%if %{with python3}
 %files -n python3-%{modname}
 %license LICENSE
 %doc README.rst
 %{python3_sitearch}/PyNaCl-*.egg-info/
 %{python3_sitearch}/nacl/
+%endif
 
 %changelog
 * Fri Feb 15 2019 Yatin Karel <ykarel@redhat.com> - 1.3.0-1
