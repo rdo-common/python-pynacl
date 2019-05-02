@@ -12,6 +12,9 @@ License:        ASL 2.0
 URL:            https://github.com/pyca/pynacl
 Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
 
+# hypothesis 4 support
+Patch1:         %{url}/pull/480.patch
+
 BuildRequires:  gcc
 BuildRequires:  libsodium-devel
 
@@ -55,7 +58,7 @@ BuildRequires:  python3-hypothesis >= 3.27.0
 Python 3 version.
 
 %prep
-%autosetup -n %{modname}-%{version}
+%autosetup -p1 -n %{modname}-%{version}
 # Remove bundled libsodium, to be sure
 rm -vrf src/libsodium/
 
