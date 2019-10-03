@@ -5,7 +5,7 @@
 
 Name:           python-%{modname}
 Version:        1.3.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
 License:        ASL 2.0
@@ -97,6 +97,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %{python3_sitearch}/nacl/
 
 %changelog
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.3.0-4
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 1.3.0-3
 - Rebuilt for Python 3.8
 
