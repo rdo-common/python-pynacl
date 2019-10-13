@@ -5,7 +5,7 @@
 
 Name:           python-%{modname}
 Version:        1.3.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
 License:        ASL 2.0
@@ -24,22 +24,6 @@ a crypto library with the stated goal of improving usability, security\
 and speed.
 
 %description %{_description}
-
-%package -n python2-%{modname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{modname}}
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-cffi >= 1.4.1
-%if %{with check}
-BuildRequires:  python2-six
-BuildRequires:  python2-pytest >= 3.2.1
-BuildRequires:  python2-hypothesis >= 3.27.0
-%endif
-
-%description -n python2-%{modname} %{_description}
-
-Python 2 version.
 
 %package -n python3-%{modname}
 Summary:        %{summary}
@@ -71,24 +55,15 @@ sed -i 's/@settings(deadline=1500, max_examples=5)/@settings(deadline=4000, max_
 
 %build
 export SODIUM_INSTALL=system
-%py2_build
 %py3_build
 
 %install
-%py2_install
 %py3_install
 
 %if %{with check}
 %check
-PYTHONPATH=%{buildroot}%{python2_sitearch} py.test-2 -v
 PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %endif
-
-%files -n python2-%{modname}
-%license LICENSE
-%doc README.rst
-%{python2_sitearch}/PyNaCl-*.egg-info/
-%{python2_sitearch}/nacl/
 
 %files -n python3-%{modname}
 %license LICENSE
@@ -97,6 +72,10 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %{python3_sitearch}/nacl/
 
 %changelog
+* Sun Oct 13 2019 Miro Hrončok <mhroncok@redhat.com> - 1.3.0-5
+- Subpackage python2-pynacl has been removed
+  See https://fedoraproject.org/wiki/Changes/Mass_Python_2_Package_Removal
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.3.0-4
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
