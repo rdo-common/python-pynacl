@@ -14,12 +14,18 @@
 
 Name:           python-%{modname}
 Version:        1.3.0
-Release:        1%{?dist}
+Release:        1%{?dist}.rdo.1
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
 License:        ASL 2.0
 URL:            https://github.com/pyca/pynacl
 Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
+
+# hypothesis 4 support
+Patch1:         %{url}/pull/480.patch
+# ed25519 support
+Patch2:         %{url}/pull/493.patch
+Patch3:         %{url}/pull/528.patch
 
 BuildRequires:  gcc
 BuildRequires:  libsodium-devel
@@ -71,7 +77,7 @@ Python 3 version.
 %endif
 
 %prep
-%autosetup -n %{modname}-%{version}
+%autosetup -p1 -n %{modname}-%{version}
 # Remove bundled libsodium, to be sure
 rm -vrf src/libsodium/
 
@@ -126,6 +132,10 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %endif
 
 %changelog
+* Fri Mar 27 2020 Damien Ciabrini <dciabrin@redhat.com> - 1.3.0-1.rdo.1
+- Fix building with hypothesis 4 (#480)
+- Added support for ed25519 arithmetic operations (#493 and #528)
+
 * Fri Feb 15 2019 Yatin Karel <ykarel@redhat.com> - 1.3.0-1
 - Update to 1.3.0
 
