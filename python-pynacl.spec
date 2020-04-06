@@ -5,7 +5,7 @@
 
 Name:           python-%{modname}
 Version:        1.3.0
-Release:        6%{?dist}
+Release:        6%{?dist}.rdo.1
 Summary:        Python binding to the Networking and Cryptography (NaCl) library
 
 License:        ASL 2.0
@@ -14,6 +14,9 @@ Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
 
 # hypothesis 4 support
 Patch1:         %{url}/pull/480.patch
+# ed25519 support
+Patch2:         %{url}/pull/493.patch
+Patch3:         %{url}/pull/528.patch
 
 BuildRequires:  gcc
 BuildRequires:  libsodium-devel
@@ -72,6 +75,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v
 %{python3_sitearch}/nacl/
 
 %changelog
+* Fri Mar 27 2020 Damien Ciabrini <dciabrin@redhat.com> - 1.3.0-6.rdo.1
+- Added support for ed25519 arithmetic operations (#493 and #528)
+
 * Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
